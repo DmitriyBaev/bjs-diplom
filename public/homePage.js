@@ -1,11 +1,12 @@
 'use strict';
 
-// Выход из личного кабинета
-// const logoutButton = new LogoutButton();
-// logoutButton.action = ApiConnector.logout((response) => { 
-//     if (response.success)
-//     location.reload()
-// })
+//Выход из личного кабинета
+const logoutButton = new LogoutButton();
+logoutButton.action = () => ApiConnector.logout((response) => { 
+    if (response.success)
+    location.reload()
+})
+
 
 //Получение информации о пользователе
 ApiConnector.current((response) => {
@@ -14,13 +15,13 @@ ApiConnector.current((response) => {
 
 //Получение текущих курсов валюты
 const ratesBoard = new RatesBoard();
-setInterval(
+const getStocks = () =>
   ApiConnector.getStocks((response) => {
     if (response.success) ratesBoard.clearTable();
     ratesBoard.fillTable(response.data);
-  }),
-  3600000
-);
+  });
+getStocks();
+setInterval(getStocks, 60000)
 
 // Операции с деньгами
 const moneyManager = new MoneyManager();
